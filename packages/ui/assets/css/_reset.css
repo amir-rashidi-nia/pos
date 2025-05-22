@@ -1,0 +1,30 @@
+input:-webkit-autofill,
+input:-webkit-autofill:enabled,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:enabled,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:enabled,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: var(--color-background) 5000s ease-in-out 0s !important;
+  -webkit-text-fill-color: var(--color-text);
+}
+.dark input:-webkit-autofill,
+.dark input:-webkit-autofill:enabled,
+.dark input:-webkit-autofill:hover,
+.dark input:-webkit-autofill:focus,
+.dark textarea:-webkit-autofill,
+.dark textarea:-webkit-autofill:enabled,
+.dark textarea:-webkit-autofill:hover,
+.dark textarea:-webkit-autofill:focus,
+.dark select:-webkit-autofill,
+.dark select:-webkit-autofill:enabled,
+.dark select:-webkit-autofill:hover,
+.dark select:-webkit-autofill:focus {
+  transition: var(--color-dark-background) 5000s ease-in-out 0s !important;
+  -webkit-text-fill-color: var(--color-dark-text);
+}

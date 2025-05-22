@@ -1,0 +1,18 @@
+ <svg
+    aria-label="Saved"
+    color="currentColor"
+    fill="currentColor"
+    height="25"
+    viewBox="0 0 24 24"
+    width="25"
+  >
+    <title>Saved</title>
+    <polygon
+      fill="none"
+      points="20 21 12 13.44 4 21 4 3 20 3 20 21"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+    />
+  </svg>

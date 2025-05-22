@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@import "./_font.css";
+
+@import "./_theme.css";
+@import "./_base.css";
+@import "./_utility.css";
+@import "./_toast.css";
+@import "./_reset.css";
+@import "./_calender.css";

@@ -1,0 +1,19 @@
+{
+  "name": "newarch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "dotenv -- pnpm -r build",
+    "packages": "dotenv -- pnpm --filter",
+    "dev": "dotenv -- pnpm -r dev",
+    "app": "pnpm packages @newarch/app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "dotenv-cli": "^8.0.0"
+  }
+}

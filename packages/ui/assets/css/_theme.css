@@ -1,0 +1,27 @@
+@theme {
+  /* font */
+  --font-iranYekan: "iranYekan", sans-serif;
+  /* colors */
+  --color-background: hsl(0 0% 100%);
+  
+  --color-brand: hsl(204 100% 50.6%);
+  --color-brand-foreground: hsl(217 85.4% 52.4%);
+
+  --color-primary: hsl(0 0% 93.7%);
+  --color-primary-foreground: hsl(0 0% 85.9%);
+  
+  --color-text: hsl(0 0% 0%);
+  --color-text-foreground: hsl(0 0% 45.1%);
+  
+  --color-dark-background: hsl(0 0% 0%);
+
+  --color-dark-primary: hsl(0 0% 21.2%);
+  --color-dark-primary-foreground: hsl(0 0% 15.1%);
+
+  --color-dark-text: hsl(0 0% 96.1%);
+  --color-dark-text-foreground: hsl(0 0% 66.1%);
+
+  --color-danger: hsl(356.34, 82%, 60.78%);
+  --color-success: hsl(115.79, 45.97%, 48.63%);
+
+}

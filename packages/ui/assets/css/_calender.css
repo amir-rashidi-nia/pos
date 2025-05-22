@@ -1,0 +1,21 @@
+.vpd-container {
+  @apply !z-100 overflow-hidden rounded-lg opacity-100;
+}
+.vpd-body {
+  @apply !z-100 !bg-primary !text-text opacity-100 dark:!bg-dark-primary dark:text-dark-text-foreground;
+}
+.vpd-addon-list {
+  @apply !z-100 !bg-primary !text-text opacity-100 dark:!bg-dark-primary dark:text-dark-text-foreground;
+}
+.vpd-addon-list-item {
+  @apply !border-none;
+}
+.vpd-addon-list-content {
+  @apply !z-100 !bg-primary !text-text opacity-100 dark:!bg-dark-primary dark:text-dark-text-foreground;
+}
+.swiper-pagination-bullet {
+  @apply !bg-dark-primary !opacity-100;
+}
+.swiper-pagination-bullet-active {
+  @apply !bg-brand;
+}

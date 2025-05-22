@@ -1,0 +1,10 @@
+.Vue-Toastification__toast--default.my-custom-toast-class {
+  font-family: "iranYekan";
+  background-color: rgb(38 38 38 / 0.95);
+  max-width: 120px;
+  margin: 15px auto;
+  font-size: 14px !important;
+  text-align: center;
+  z-index: 100;
+  border-radius: 8px;
+}
