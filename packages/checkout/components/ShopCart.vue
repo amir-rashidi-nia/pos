@@ -1,25 +1,25 @@
 <template>
     <div class="relative w-full space-y-4">
         <CheckoutProductList />
-         <div>
-             <div v-if="!products || products?.length <= 0"
-                 class="flex w-full justify-center rounded-lg gap-2 py-2 px-2 mt-2 bg-primary-foreground dark:bg-dark-primary">
-                 <p class="text-sm leading-none">سبد خرید شما خالی است</p>
-             </div>
-     
-             <div v-else
-                 class="flex w-full justify-between items-center rounded-lg gap-2 h-8 py-2 px-2 mt-2 bg-primary-foreground dark:bg-dark-primary">
-                 <p class="text-sm leading-none">مجموع</p>
-                 <div class="flex items-center gap-1">
-                     <p class=" leading-none">{{ splitNumber(amountCart) }}</p>
-                 </div>
-             </div>
-         </div>
+        <div>
+            <div v-if="!products || products?.length <= 0"
+                class="flex w-full justify-center rounded-lg gap-2 py-2 px-2 mt-2 bg-primary-foreground dark:bg-dark-primary">
+                <p class="text-sm leading-none">سبد خرید شما خالی است</p>
+            </div>
+
+            <div v-else
+                class="flex w-full justify-between items-center rounded-lg gap-2 h-8 py-2 px-2 mt-2 bg-primary-foreground dark:bg-dark-primary">
+                <p class="text-sm leading-none">مجموع</p>
+                <div class="flex items-center gap-1">
+                    <p class=" leading-none">{{ splitNumber(amountCart) }}</p>
+                </div>
+            </div>
+        </div>
         <UiButton @click="purchase" variant="secondary" class="w-full h-10" :loading="purchaseLoading">
             چاپ رسید
         </UiButton>
         <UiButton @click="shopCart.clear()" class="w-full h-10" :loading="purchaseLoading">
-             حذف سبد خرید
+            حذف سبد خرید
         </UiButton>
         <AddressModalAdd v-model="showNewAddressForm" @updateAddress="updateAddressHandler" />
     </div>
@@ -31,6 +31,7 @@ import { useAuthBaseStore } from "~base/stores/auth";
 import { useCartStore } from "~base/stores/shopCart";
 import { useShopStore } from "~base/stores/shop";
 import services from "~checkout/lib/services";
+import { printReceipt } from '~checkout/utils/printReceipt';
 
 const emit = defineEmits(['print']);
 const authBase = useAuthBaseStore();
@@ -55,9 +56,19 @@ async function updateAddressHandler() {
     deliveryFee.value = shopData.value?.delivery_fee
 }
 
+const receipt = {
+  shopName: "Super Cafe",
+  items: [
+    { name: "Latte", qty: 2, price: 4.0 },
+    { name: "Croissant", qty: 1, price: 3.0 },
+  ],
+  total: 11.0,
+  footer: "Visit us again!"
+};
 
 async function purchase() {
-    emit('print')
+   
+    printReceipt(receipt)
     return
     const finalProduct = products.value?.map((item) => {
         return {

@@ -23,6 +23,5 @@
     "vue": "latest"
   },
   "dependencies": {
-    "vue-to-print": "^1.4.0"
   }
 }
