@@ -1,24 +1,14 @@
 <template>
     <div class="z-50 w-14 xl:w-60 2xl:w-80 h-screen hidden fixed top-0 px-4 xl:pl-2 sm:flex flex-col pt-3 xl:pt-8 border-l-[0.75px] border-primary-foreground dark:border-dark-primary bg-background dark:bg-dark-background" >
         <!-- <OrderList /> -->
-        <CheckoutShopCart @print="handlePrint" />
-        <div class="fixed mx-auto top-0 left-0 hidden">
-          <CheckoutReceipt ref="componentRef"  />
-        </div>
+        <CheckoutShopCart/>
     </div>
 </template>
 <script setup>
-import { useVueToPrint } from "vue-to-print";
 import { storeToRefs } from 'pinia';
 import { useShopStore } from '~base/stores/shop';
 import { useAuthBaseStore } from '~base/stores/auth';
 import { useRoute } from 'vue-router';
-
-const componentRef = ref();
-const { handlePrint } = useVueToPrint({
-  content: componentRef,
-  documentTitle: "AwesomeFileName",
-});
 
 const route = useRoute()
 const authBase = useAuthBaseStore()

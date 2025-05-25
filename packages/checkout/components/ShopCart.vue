@@ -15,6 +15,9 @@
                 </div>
             </div>
         </div>
+
+        <canvas ref="receiptCanvas" width="384" height="500" style="display: none;"></canvas>
+
         <UiButton @click="purchase" variant="secondary" class="w-full h-10" :loading="purchaseLoading">
             چاپ رسید
         </UiButton>
@@ -56,19 +59,58 @@ async function updateAddressHandler() {
     deliveryFee.value = shopData.value?.delivery_fee
 }
 
-const receipt = {
-  shopName: "Super Cafe",
+const receiptData = {
+  shopName: 'سوپر گل',
   items: [
-    { name: "Latte", qty: 2, price: 4.0 },
-    { name: "Croissant", qty: 1, price: 3.0 },
+    { name: 'چای ایرانی', qty: 2, price: 25000 },
+    { name: 'بیسکویت', qty: 1, price: 10000 },
   ],
-  total: 11.0,
-  footer: "Visit us again!"
-};
+  total: 60000,
+  footer: 'از خرید شما سپاسگزاریم!'
+}
+
+const receiptCanvas = ref(null)
+
+const drawReceipt = () => {
+  const canvas = receiptCanvas.value
+  const ctx = canvas.getContext('2d')
+
+  // Clear and setup
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = '#000'
+  ctx.font = '20px Tahoma'
+  ctx.textAlign = 'right'
+  ctx.direction = 'rtl'
+
+  let y = 30
+
+  ctx.fillText(receiptData.shopName, 370, y)
+  y += 30
+  ctx.fillText('-------------------------------', 370, y)
+  y += 30
+
+  for (const item of receiptData.items) {
+    const line = `${item.name} x${item.qty} - ${item.price * item.qty} ریال`
+    ctx.fillText(line, 370, y)
+    y += 30
+  }
+
+  ctx.fillText('-------------------------------', 370, y)
+  y += 30
+  ctx.fillText(`جمع کل: ${receiptData.total} ریال`, 370, y)
+  y += 30
+  ctx.fillText(receiptData.footer, 370, y)
+}
+
+
+const canvasToBase64 = () => {
+  return receiptCanvas.value.toDataURL('image/png').replace(/^data:image\/png;base64,/, '')
+}
 
 async function purchase() {
-   
-    printReceipt(receipt)
+    drawReceipt()
+    const base64 = canvasToBase64()
+    printReceipt(base64)
     return
     const finalProduct = products.value?.map((item) => {
         return {

@@ -8,9 +8,21 @@ export async function printReceipt(dynamicData) {
     }
 
     await qz.websocket.connect();
-    const config = qz.configs.create(null); // Default printer
-    const commands = formatReceipt(dynamicData);
+    const config = qz.configs.create(null, {
+      rasterize: true,
+      scaleContent: true,
+      density: '203dpi',
+      colorType: 'blackwhite'
+    })
+    // const commands = formatReceipt(dynamicData);
     await qz.print(config, commands);
+    await qz.print(config, [
+      {
+        type: 'image',
+        format: 'base64',
+        data: base64
+      }
+    ])
     await qz.websocket.disconnect();
   } catch (err) {
     console.error("Print Error:", err);
