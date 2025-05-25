@@ -9,8 +9,7 @@ export const useAuthBaseStore = defineStore("authBase", () => {
   const forPurchase = ref(false);
   const showEnterModal = ref(false);
   const showEditNumberModal = ref(false);
-
-  const isLogin = computed(() => !!user.value);
+  const isLogin = computed(() => !!user.value?.is_owner);
 
   const shop = useShopStore();
   const { shopData } = storeToRefs(shop);

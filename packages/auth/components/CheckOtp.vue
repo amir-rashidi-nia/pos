@@ -71,19 +71,8 @@ async function verify(val) {
         if (response?.status === "ok") {
             const token = useCookie('token');
             token.value = response?.data.token;
-            if (user.value.is_authenticated && forPurchase.value) {
-                forPurchase.value = false;
-                if(route.path == '/checkout') {
-                    showEnterModal.value = false;
-                }else {
-                    return navigateTo('/checkout')
-                }
-            } else if (user.value.is_authenticated && !forPurchase.value) {
-                showEnterModal.value = false;
-                return
-            } else {
-                emit('nextSlide')
-                return
+            if (user.value.is_owner) {
+                return navigateTo('/')
             }
         }
     } catch (error) {

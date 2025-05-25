@@ -23,5 +23,6 @@
     "vue": "latest"
   },
   "dependencies": {
+    "qz-tray": "^2.2.4"
   }
 }

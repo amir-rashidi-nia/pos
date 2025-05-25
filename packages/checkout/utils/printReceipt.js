@@ -1,29 +1,34 @@
-import { formatReceipt } from './receiptFormatter'; // if split into another file
+import qz  from 'qz-tray'; 
 
-export async function printReceipt(dynamicData) {
+export async function printReceipt(receiptData) {
   try {
-    if (!window.qz) {
-      alert("QZ Tray not loaded.");
+    
+    if (!qz.websocket.isActive()) {
+      console.log("QZ Tray is not connected. Attempting to connect...");
+      await qz.websocket.connect();
+      console.log("Connected to QZ Tray!");
+    }
+
+
+    const printer = await qz.printers.getDefault();
+    if (!printer) {
+      console.error("No printer found");
       return;
     }
 
-    await qz.websocket.connect();
-    const config = qz.configs.create(null, {
+    const config = qz.configs.create(printer, {
       rasterize: true,
       scaleContent: true,
       density: '203dpi',
       colorType: 'blackwhite'
     })
-    // const commands = formatReceipt(dynamicData);
-    await qz.print(config, commands);
     await qz.print(config, [
       {
         type: 'image',
         format: 'base64',
-        data: base64
+        data: receiptData
       }
     ])
-    await qz.websocket.disconnect();
   } catch (err) {
     console.error("Print Error:", err);
   }
