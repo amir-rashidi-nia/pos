@@ -10,7 +10,8 @@
 </template>
 <script setup>
 definePageMeta({
-    layout: 'main'
+    layout: 'main',
+    middleware: 'auth'
 })
 import { storeToRefs } from 'pinia';
 import { useShopStore } from '~base/stores/shop';

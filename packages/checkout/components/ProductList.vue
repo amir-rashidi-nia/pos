@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full relative h-full flex flex-col items-center border-t-[0.05rem] border-primary-foreground dark:border-dark-primary pt-4">
+    <div class="w-full relative h-full flex flex-col items-center pt-4">
         <div v-if="!products || products?.length <= 0 || !products[0]?.pk"
             class="w-full flex flex-col items-center justify-center py-4 rounded-lg gap-2 overflow-y-scroll no-scrollbar">
             <div

@@ -71,8 +71,7 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
     ctx.clearRect(0, 0, receiptCanvas.value.width, receiptCanvas.value.height);
     
     // Set styles
-    ctx.font = '16px sans-serif';
-    // ctx.font = '16px "Arial", Arial, sans-serif';
+    ctx.font = '18px iranYekan';
     ctx.fillStyle = '#000';
     ctx.textAlign = 'right';
     
@@ -86,10 +85,9 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
         ctx.save();
         
         // Set font style
-        const fontSize = options.fontSize || 16;
-        const fontWeight = options.bold ? 'bold' : 'normal';
-        ctx.font = `${fontWeight} ${fontSize}px sans-serif`;
-        // ctx.font = `${fontWeight} ${fontSize}px "Arial", Arial, sans-serif`;
+        const fontSize = options.fontSize || 18;
+        const fontWeight = options.bold ? '900' : '700';
+        ctx.font = `${fontWeight} ${fontSize}px iranYekan`;
         
         // Set text alignment
         ctx.textAlign = options.align || 'right';
@@ -114,15 +112,15 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
     // Draw header
     drawText(receiptShopData?.name || 'سوپر مارکت', { fontSize: 20, bold: true, align: 'center' });
     drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
-    drawText('رسید خرید', { fontSize: 18, bold: true, align: 'center' });
+    drawText('رسید خرید', { fontSize: 20, bold: true, align: 'center' });
     
     // Current date/time in Persian
     const now = new Date();
     const persianDate = now.toLocaleDateString('fa-IR');
     const persianTime = now.toLocaleTimeString('fa-IR');
     
-    drawText(`تاریخ: ${persianDate}`);
-    drawText(`ساعت: ${persianTime}`);
+    drawText(`تاریخ: ${persianDate}`, { bold: true });
+    drawText(`ساعت: ${persianTime}`, { bold: true });
     drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
     drawText('شرح کالا', { bold: true });
     
@@ -138,8 +136,7 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
         
         // Details (aligned using fixed positions)
         ctx.save();
-        ctx.font = '14px "B Nazanin", Arial, sans-serif';
-        
+        ctx.font = '700 18px iranYekan';
         // Quantity at 150px from right
         ctx.fillText(qtyText, receiptWidth - 150, yPos);
         
@@ -156,10 +153,10 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
     drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center', spacing: 10 });
     
     // Draw totals
-    drawText(`جمع کل: ${splitNumber(receiptTotal)} ریال`, { bold: true });
+    drawText(`جمع کل: ${splitNumber(receiptTotal)} ریال`, { font: '18px iranYekan', bold: true ,fontSize: 20, align: 'center'});
     drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
-    drawText('از خرید شما سپاسگزاریم', { align: 'center', fontSize: 14 });
-    drawText(receiptShopData?.address || '', { align: 'center', fontSize: 12 });
+    drawText('از خرید شما سپاسگزاریم', { align: 'center', fontSize: 20 });
+    drawText(receiptShopData?.address || '', { align: 'center', fontSize: 18 });
 };
 
 
@@ -177,6 +174,10 @@ async function purchase() {
             variant: item.variantId,
         };
     });
+    drawReceipt(shopData.value, finalProduct, amountCart.value)
+    const base64 = canvasToBase64()
+    printReceipt(base64)
+    return
     purchaseLoading.value = true;
     try {
         const response = await services.purchase(

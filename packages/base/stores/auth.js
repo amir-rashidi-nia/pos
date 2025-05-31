@@ -31,7 +31,7 @@ export const useAuthBaseStore = defineStore("authBase", () => {
     user.value = null;
     await navigateTo("/");
   }
-  
+ 
   return {
     user,
     isLogin,
