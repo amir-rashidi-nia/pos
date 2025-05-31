@@ -198,10 +198,12 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal, receiptCode) =
     drawText('ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
     drawText('از خرید شما سپاسگزاریم', { align: 'center', fontSize: 20 });
     
+    drawText(`${receiptShopData.name}.busibuy.ir`, { align: 'center' });
     // Shop contact info if available
     if (receiptShopData?.website) {
         drawText(`وبسایت: ${receiptShopData.website}`, { align: 'center' });
     }
+    
 };
 
 console.log(shopData.value)

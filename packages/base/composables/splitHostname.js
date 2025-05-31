@@ -3,6 +3,11 @@ export function useSplitHostname(hostname) {
   if (parts[0] === "www") {
     parts.shift();
   }
+  if (parts[0] === "pos") {
+    parts.shift();
+  } else {
+    return false;
+  }
   const subdomain = parts[0];
   let isDomain = 1;
   if (["localhost", "busibuy", "busilink"].includes(subdomain)) {
