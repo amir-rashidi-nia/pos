@@ -145,6 +145,7 @@ function addToShopCart(product) {
     const mainProduct = productSchemaCreator(product);
     const isValidate = validation(mainProduct, false, true);
     if (isValidate) {
+        mainVariant.value = null;
         shopCart.addToCart(mainProduct);
         isExistInShopcart.value = true;
     }

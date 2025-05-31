@@ -65,7 +65,7 @@ const splitNumber = (num) => {
 
 const receiptCanvas = ref(null)
 
-const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
+const drawReceipt = (receiptShopData, receiptItems, receiptTotal, receiptCode) => {
     if (!receiptCanvas.value) return;
     const ctx = receiptCanvas.value.getContext('2d');
     ctx.clearRect(0, 0, receiptCanvas.value.width, receiptCanvas.value.height);
@@ -78,6 +78,8 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
     // Receipt width (384px for 80mm at ~96dpi)
     const receiptWidth = 384;
     const margin = 10;
+    const cardPadding = 8;
+    const cardMargin = 5;
     let yPos = 30;
     
     // Helper function to draw text
@@ -86,7 +88,7 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
         
         // Set font style
         const fontSize = options.fontSize || 18;
-        const fontWeight = options.bold ? '900' : '700';
+        const fontWeight = options.bold ? '800' : '700';
         ctx.font = `${fontWeight} ${fontSize}px iranYekan`;
         
         // Set text alignment
@@ -110,55 +112,99 @@ const drawReceipt = (receiptShopData, receiptItems, receiptTotal) => {
     };
     
     // Draw header
-    drawText(receiptShopData?.name || 'سوپر مارکت', { fontSize: 20, bold: true, align: 'center' });
-    drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
+    ctx.font = '800 20px iranYekan';
+    drawText(receiptShopData?.name || 'سوپر مارکت', { fontSize: 24, bold: true, align: 'center' });
+    drawText('ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
     drawText('رسید خرید', { fontSize: 20, bold: true, align: 'center' });
     
     // Current date/time in Persian
     const now = new Date();
     const persianDate = now.toLocaleDateString('fa-IR');
     const persianTime = now.toLocaleTimeString('fa-IR');
+
+    ctx.save();
+    ctx.font = '700 18px iranYekan';
+    const dateTimeText = `تاریخ: ${persianDate}   |   ساعت: ${persianTime}`;
+    ctx.fillText(dateTimeText, receiptWidth - margin, yPos);
+    ctx.restore();
+    yPos += 25;
+
+    drawText(`کد پذیرش: ${receiptCode}` || '');
+
+    drawText('ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
     
-    drawText(`تاریخ: ${persianDate}`, { bold: true });
-    drawText(`ساعت: ${persianTime}`, { bold: true });
-    drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
-    drawText('شرح کالا', { bold: true });
-    
-    // Draw items
+    // Draw items in cards
     receiptItems?.forEach((item, index) => {
-        const itemText = `${index + 1}. ${item.name}`;
-        const qtyText = `${item.quantity} عدد`;
-        const priceText = `${splitNumber(item.price)} ریال`;
-        const totalText = `${splitNumber(item.price * item.quantity)} ریال`;
+        // Calculate card height based on content
+        const cardHeight = 80; // Fixed height for each product card
         
-        // Item name
-        drawText(itemText);
+        // Draw card background
+        ctx.save();
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(margin, yPos, receiptWidth - margin*2, cardHeight);
+        ctx.restore();
         
-        // Details (aligned using fixed positions)
+        // Position content inside card
+        const contentYStart = yPos + cardPadding;
+        let contentY = contentYStart;
+        
+        // Item name (top of card)
         ctx.save();
         ctx.font = '700 18px iranYekan';
-        // Quantity at 150px from right
-        ctx.fillText(qtyText, receiptWidth - 150, yPos);
+        ctx.fillText(`${index + 1}. ${item.name}`, receiptWidth - margin, contentY);
+        contentY += 25;
         
-        // Price at 80px from right
-        ctx.fillText(priceText, receiptWidth - 80, yPos);
+        // Separator line inside card
+        ctx.strokeStyle = '#eee';
+        ctx.beginPath();
+        ctx.moveTo(margin + 10, contentY);
+        ctx.lineTo(receiptWidth - margin - 10, contentY);
+        ctx.stroke();
+        contentY += 15;
         
-        // Total at margin from right
-        ctx.fillText(totalText, receiptWidth - margin, yPos);
+        // Item details (bottom of card)
+        ctx.font = '700 18px iranYekan';
+        
+        // Quantity
+        ctx.fillText(`تعداد: ${item.quantity} عدد`, receiptWidth - margin, contentY);
+        
+        // Price (centered)
+        ctx.textAlign = 'center';
+        ctx.fillText(`قیمت: ${splitNumber(item.price)} ریال`, receiptWidth / 2, contentY);
+        
+        // Total (left aligned)
+        ctx.textAlign = 'left';
+        ctx.fillText(`جمع: ${splitNumber(item.price * item.quantity)} ریال`, margin, contentY);
         
         ctx.restore();
-        yPos += 20;
+        
+        // Move yPos to bottom of card plus margin
+        yPos += cardHeight + cardMargin;
     });
     
-    drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center', spacing: 10 });
+    // Draw totals section
+    drawText('ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ', { align: 'center', spacing: 10 });
     
-    // Draw totals
-    drawText(`جمع کل: ${splitNumber(receiptTotal)} ریال`, { font: '18px iranYekan', bold: true ,fontSize: 20, align: 'center'});
-    drawText('ــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
+    // Total amount
+    ctx.save();
+    ctx.font = '800 20px iranYekan';
+    ctx.textAlign = 'center';
+    ctx.fillText(`جمع کل: ${splitNumber(receiptTotal)} ریال`, receiptWidth / 2, yPos);
+    ctx.restore();
+    yPos += 30;
+    
+    // Footer
+    drawText('ـــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــــ', { align: 'center' });
     drawText('از خرید شما سپاسگزاریم', { align: 'center', fontSize: 20 });
-    drawText(receiptShopData?.address || '', { align: 'center', fontSize: 18 });
+    
+    // Shop contact info if available
+    if (receiptShopData?.website) {
+        drawText(`وبسایت: ${receiptShopData.website}`, { align: 'center' });
+    }
 };
 
+console.log(shopData.value)
 
 const canvasToBase64 = () => {
   return receiptCanvas.value.toDataURL('image/png').replace(/^data:image\/png;base64,/, '')
@@ -174,27 +220,18 @@ async function purchase() {
             variant: item.variantId,
         };
     });
-    drawReceipt(shopData.value, finalProduct, amountCart.value)
-    const base64 = canvasToBase64()
-    printReceipt(base64)
-    return
+
     purchaseLoading.value = true;
     try {
         const response = await services.purchase(
             finalProduct,
             amountCart.value,
-            // phoneNumber.value ? phoneNumber.value : user.value?.user?.phone_number,
-            // userPickup.value ? 0 : deliveryFee.value,
-            // formData.address,
-            // formData.lat,
-            // formData?.lng,
-            // userPickup?.value
         );
         if (response.status === "ok") {
-            shopCart.clear()
-            drawReceipt(shopData.value, finalProduct, amountCart.value)
+            drawReceipt(shopData.value, finalProduct, amountCart.value, response?.data?.data?.tracking_code)
             const base64 = canvasToBase64()
             printReceipt(base64)
+            shopCart.clear()
         }
     } catch (error) {
         console.log(error);
