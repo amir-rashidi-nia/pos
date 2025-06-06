@@ -19,7 +19,7 @@ export const useAuthBaseStore = defineStore("authBase", () => {
 
   async function getInfo(shop = shopData.value.eng_name) {
     const data = await authService.getUserInfo(shop);
-    if (data.status === "ok") {
+    if (data.status === "ok" && data?.data?.is_owner) {
       user.value = data.data;
       return data;
     }

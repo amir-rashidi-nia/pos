@@ -65,6 +65,7 @@ function submitHandler(event) {
 }
 
 async function verify(val) {
+	if(loading.value) return
     loading.value = true;
     try {
         const response = await auth.verifyNumber(val.otp);
